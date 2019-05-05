@@ -94,60 +94,80 @@ class SortingRobot:
         """
         return self._light == "ON"
 
-    def on_move_right(self):
-        if self.compare_item() == -1:
+    def sort_item_right(self):
+        if self.compare_item() == 1:
+            self.move_right()
+        elif self.compare_item() == -1:
             self.swap_item()
             self.move_right()
-        elif self.compare_item() == 1:
-            print("Greater Than")
+        elif self.compare_item() == 0:
             self.move_right()
         elif self.compare_item() is None:
             self.swap_item()
             self.move_right()
-        if self.can_move_right() is False:
-            if self.compare_item() == 1:
-                self.swap_item()
-                self.sort_left()
-            elif self.compare_item() == -1:
-                # self.move_left()
-                self.sort_left()
 
-        if self.can_move_right() is False and self.compare_item() is None:
-            self.swap_item()
-            self.set_light_off()
-
-    def sort_left(self):
-        self.move_left()
+    def sort_item_left(self):
         if self.compare_item() == 1:
             self.swap_item()
             self.move_left()
         elif self.compare_item() == -1:
-            print("Less Than")
             self.move_left()
         elif self.compare_item() == 0:
             self.move_left()
+        elif self.compare_item() is None:
+            self.swap_item()
 
-        # if self.can_move_left() is False:
-        #     if self.compare_item() is None:
-        #         self.swap_item()
-        #         self.set_light_off()
+        # if self.compare_item() is None:
+        #     self.swap_item()
 
     def sort(self):
         """
         Sort the robot's list.
         """
-        self.set_light_on()
-        self.swap_item()
-        self.move_right()
-        print(self._position)
-
-        while self.light_is_on():
-            # self.set_light_off()
-
-            self.on_move_right()
+        # self.swap_item()
+        # self.move_right()
+        if self.can_move_left() is False and self.compare_item() is None:
+            self.set_light_on()
+        # else:
+        #     self.sort_item_left()
 
         print(self._item)
-    # print(self.light_is_on())
+        while self.light_is_on() is True:
+            if self.compare_item() == -1 and self.can_move_right() is False:
+                self.set_light_off()
+            elif self.compare_item() == 1 and self.can_move_right() is False:
+                self.swap_item()
+                self.set_light_off()
+                # return
+            elif self.can_move_right() is False and self.compare_item() is None:
+                self.swap_item()
+                # self.set_light_off()
+                return
+            elif self.can_move_left() is False and self.compare_item() is None:
+                self.swap_item()
+                self.move_right()
+                # self.sort()
+            else:
+                self.sort_item_right()
+
+        while self.light_is_on() is False:
+            print(self._list)
+            print(self._item)
+            if self.compare_item() == -1 and self.can_move_left() is False:
+                self.swap_item()
+                self.set_light_on()
+            elif self.compare_item() is None and self.can_move_left() is False:
+                self.swap_item()
+                self.set_light_on()
+            elif self.compare_item() == 0 and self.can_move_left() is False:
+                return
+            elif self.compare_item() == 1 and self.can_move_left() is False:
+                self.set_light_on()
+            else:
+                self.sort_item_left()
+
+        self.sort()
+        print(self._item)
     # Fill this out
 
 
@@ -164,3 +184,8 @@ if __name__ == "__main__":
 
     robot.sort()
     print(robot._list)
+
+
+# I realized I needed a way to loop up and down the list, checking for when the robot reaches the end of the list and whether the number at the start/end of the list needs to be sorted.
+
+# The list now sorts properly but I've created an endless loop. I need to figure out how to break out of it.
