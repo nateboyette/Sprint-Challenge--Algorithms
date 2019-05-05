@@ -184,3 +184,6 @@ if __name__ == "__main__":
 
 
 # **SOLVED** I realized in order to break out of the list I needed to move "None" up the list as it got sorted. That was I could check once the robot made it back up to the list and whether or not the comparison returned None. If so I knew the list is sorted and I could break out of the loop and return the sorted list.
+
+
+# Solution also passes the stretch tests.
