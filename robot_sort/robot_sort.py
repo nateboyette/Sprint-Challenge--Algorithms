@@ -114,8 +114,6 @@ class SortingRobot:
             self.move_left()
         elif self.compare_item() == 0:
             self.move_left()
-        elif self.compare_item() is None:
-            self.swap_item()
 
         # if self.compare_item() is None:
         #     self.swap_item()
@@ -140,9 +138,9 @@ class SortingRobot:
                 self.set_light_off()
                 # return
             elif self.can_move_right() is False and self.compare_item() is None:
+                return
                 self.swap_item()
                 # self.set_light_off()
-                return
             elif self.can_move_left() is False and self.compare_item() is None:
                 self.swap_item()
                 self.move_right()
@@ -153,15 +151,9 @@ class SortingRobot:
         while self.light_is_on() is False:
             print(self._list)
             print(self._item)
-            if self.compare_item() == -1 and self.can_move_left() is False:
+            if self.compare_item() is None:
                 self.swap_item()
-                self.set_light_on()
-            elif self.compare_item() is None and self.can_move_left() is False:
-                self.swap_item()
-                self.set_light_on()
-            elif self.compare_item() == 0 and self.can_move_left() is False:
-                return
-            elif self.compare_item() == 1 and self.can_move_left() is False:
+                self.move_right()
                 self.set_light_on()
             else:
                 self.sort_item_left()
@@ -189,3 +181,6 @@ if __name__ == "__main__":
 # I realized I needed a way to loop up and down the list, checking for when the robot reaches the end of the list and whether the number at the start/end of the list needs to be sorted.
 
 # The list now sorts properly but I've created an endless loop. I need to figure out how to break out of it.
+
+
+# **SOLVED** I realized in order to break out of the list I needed to move "None" up the list as it got sorted. That was I could check once the robot made it back up to the list and whether or not the comparison returned None. If so I knew the list is sorted and I could break out of the loop and return the sorted list.
