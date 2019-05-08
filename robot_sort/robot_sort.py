@@ -115,42 +115,49 @@ class SortingRobot:
         elif self.compare_item() == 0:
             self.move_left()
 
-        # if self.compare_item() is None:
-        #     self.swap_item()
-
     def sort(self):
         """
         Sort the robot's list.
         """
-        # self.swap_item()
-        # self.move_right()
+
+        # If robot is at the beggining and either holding None
+        # Turn on the light to start sorting
         if self.can_move_left() is False and self.compare_item() is None:
             self.set_light_on()
-        # else:
-        #     self.sort_item_left()
 
-        print(self._item)
-        while self.light_is_on() is True:
+        # while the light is on the robot will sort to the right
+        # until it reaches the end of the list
+        while self.light_is_on() is True:\
+
+            # If the robot reaches the end of the list and the held item
+            # is less that the item in the list. Turn off the light to start
+            # sorting left/back down the list.
             if self.compare_item() == -1 and self.can_move_right() is False:
                 self.set_light_off()
+
+            # If the item is greater than the last item in the list
+            # swap and turn off the light to start sorting back down the list.
             elif self.compare_item() == 1 and self.can_move_right() is False:
                 self.swap_item()
                 self.set_light_off()
-                # return
-            elif self.can_move_right() is False and self.compare_item() is None:
-                return
-                self.swap_item()
-                # self.set_light_off()
+
+            # If the robot makes it back to the beggining of the list and
+            # THe first item is none, swap the item held and continue sorting right.
             elif self.can_move_left() is False and self.compare_item() is None:
                 self.swap_item()
                 self.move_right()
-                # self.sort()
+
+            # If the last item held is None and we've reached the end of the list
+            # That means the list has been sorted and we can break out of the loop
+            elif self.can_move_right() is False and self.compare_item() is None:
+                return
             else:
                 self.sort_item_right()
 
         while self.light_is_on() is False:
-            print(self._list)
-            print(self._item)
+
+            # While sorting left, if the item is None
+            # Swap and begin sorting to right from this position
             if self.compare_item() is None:
                 self.swap_item()
                 self.move_right()
@@ -159,7 +166,6 @@ class SortingRobot:
                 self.sort_item_left()
 
         self.sort()
-        print(self._item)
     # Fill this out
 
 
